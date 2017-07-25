@@ -1,0 +1,16 @@
+
+  consultaDatosBasicos:
+    required:
+    - "canal"
+    - "idPersona"
+    properties:
+      idPersona:
+        type: "number"
+        example: 1025478963
+      ticket:
+        $ref: "#/definitions/BEOconsultaDatosBasicos_ticket"
+      canal:
+        type: "string"
+        example: "CUBA1234575SDF"
+        minLength: 1
+        maxLength: 5

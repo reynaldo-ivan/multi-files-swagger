@@ -1,0 +1,390 @@
+---
+swagger: "2.0"
+info:
+  description: "Documentación de los servicios Multiva Sprint 1  <a href='https://drive.google.com/open?id=0B_OaZlYG0i2ndHJUT3VFem5LWlk'>Documento\
+    \ Compartido</a>"
+  version: "0.1.0"
+  title: "Grupo Financiero Multiva"
+host: "200.39.24.141"
+tags:
+- name: ""
+  description: "Grupo Financiero Multiva"
+  externalDocs:
+    description: "Servicios Multiva"
+    url: "http://200.39.24.141:9090/docs"
+paths:
+  /BEO/consultaDatosBasicos:
+    post:
+      tags:
+      - "ESB Fuse"
+      description: "Consolidar la información relevante respecto al diseño de la operacion\
+        \ /consultaDatosBasicos del servicio /cliente requerida para la integració\
+        n de Multivanet con T24"
+      operationId: "bEOConsultaDatosBasicosPOST"
+      parameters:
+      - in: "body"
+        name: "consultaDatosBasicos,"
+        description: "Consumidor  que dibuja encabezado con datos de cliente"
+        required: true
+        schema:
+          $ref: "#/definitions/consultaDatosBasicos_1"
+      responses:
+        200:
+          description: "Servicio dummy que se publicara para el uso del consumidor\
+            \ en tanto se completa la integracion del ESB a T24. Bajo el entendido\
+            \ de que la firma expuesta en este servicio dummy no cambiara cuando el\
+            \ desarrollo termine"
+          schema:
+            $ref: "#/definitions/inline_response_200"
+      x-swagger-router-controller: "ESBFuse"
+  /BEO/consultaServiciosContratados:
+    post:
+      tags:
+      - "ESB Fuse"
+      description: "Consolidar la información relevante respecto al diseño de la operacion\
+        \ /consultaServiciosContratados del servicio /cliente requerida para la integració\
+        n de Multivanet con T24"
+      operationId: "bEOConsultaServiciosContratadosPOST"
+      parameters:
+      - in: "body"
+        name: "consultaServiciosContratados"
+        description: "Devuelve un listado de los servicios existentes para personas\
+          \ morales, indicando cuales de ellos han sido contratados por la persona\
+          \ proporcionada"
+        required: true
+        schema:
+          $ref: "#/definitions/consultaServiciosContratados_1"
+      responses:
+        200:
+          description: "Devuelve un listado de los servicios existentes para personas\
+            \ morales, indicando cuales de ellos han sido contratados por la persona\
+            \ proporcionada."
+          schema:
+            $ref: "#/definitions/inline_response_200_1"
+      x-swagger-router-controller: "ESBFuse"
+definitions:
+  consultaDatosBasicos-res:
+    required:
+    - "nombre"
+    - "numCliente"
+    properties:
+      numCliente:
+        type: "integer"
+        format: "int64"
+        example: "Long"
+        description: "Número de cliente de T24"
+      nombre:
+        type: "string"
+        example: "String"
+        description: "Nombre del cliente (agrega apellidos)"
+      listaDirecciones:
+        type: "array"
+        items:
+          $ref: "#/definitions/inline_response_200_listaDirecciones"
+      rfc:
+        type: "string"
+        example: "String"
+        description: "RFC del cliente"
+      listaTelefonos:
+        type: "array"
+        items:
+          $ref: "#/definitions/inline_response_200_listaTelefonos"
+      listaEmails:
+        type: "array"
+        items:
+          $ref: "#/definitions/inline_response_200_listaEmails"
+      tipoPersona:
+        type: "string"
+        example: "String"
+        description: "Régimen fiscal de la persona, PM, PF o PFAE."
+      estatus:
+        type: "string"
+        example: "String"
+        description: "Estatus del cliente."
+      sucursal:
+        type: "string"
+        example: "String"
+        description: "Identificador de la sucursal asociada con el cliente."
+      vip:
+        type: "string"
+        example: "String"
+        description: "Indica si el cliente es VIP"
+      responseStatus:
+        type: "integer"
+        format: "int64"
+        example: "long"
+        description: "Código de respuesta del servicio. 200 denotará una respuesta\
+          \ exitosa."
+      responseError:
+        type: "string"
+        example: "String"
+        description: "Mensaje descriptivo del error, si el código de respuesta es\
+          \ diferente de 200."
+  consultaServiciosContratados:
+    required:
+    - "canal"
+    - "idPersona"
+    properties:
+      idPersona:
+        type: "number"
+        example: 1025478963
+      ticket:
+        $ref: "#/definitions/BEOconsultaDatosBasicos_ticket"
+      canal:
+        type: "string"
+        example: "CUBA1234575SDF"
+        minLength: 1
+        maxLength: 5
+  consultaServiciosContratados-res:
+    properties:
+      listaServicios:
+        type: "array"
+        items:
+          $ref: "#/definitions/inline_response_200_1_listaServicios"
+  ticket:
+    required:
+    - "id_creds"
+    - "id_user"
+    properties:
+      id_user:
+        type: "string"
+        example: "abc"
+      id_creds:
+        type: "string"
+        example: "1233"
+  ServiciosContratadosListaServicios:
+    properties:
+      nombre:
+        type: "string"
+        example: "String"
+        description: "Nombre del servicio"
+      contratado:
+        type: "boolean"
+        example: false
+        description: "Bandera que indica si el servicio ha sido contratado por la\
+          \ persona."
+  listadirecciones:
+    properties:
+      direccion:
+        type: "string"
+        example: "String"
+        description: "Dirección del cliente, agrega calle y número"
+      poblacion:
+        type: "string"
+        example: "String"
+        description: "Delegación o municipio."
+      ciudad:
+        type: "string"
+        example: "String"
+        description: "Ciudad."
+      estado:
+        type: "string"
+        example: "String"
+        description: "Estado"
+      cp:
+        type: "string"
+        example: "String"
+        description: "Código postal."
+      tipoDireccion:
+        type: "string"
+        example: "String"
+        description: "Indica el tipo de dirección (fiscal, jurídica, de mensajes,\
+          \ etc.)."
+  listaEmails:
+    properties:
+      mail:
+        type: "string"
+        example: "String"
+        description: "Correo electrónico."
+      activo:
+        type: "boolean"
+        example: false
+        description: "Bandera que indica si el correo en cuestión está activo o no."
+      tipoEmail:
+        type: "string"
+        example: "String"
+        description: "Indica el uso que se le da al correo del cliente."
+    description: "Solo se tomara el primer numero telefonico"
+  listaDeTelefonos:
+    properties:
+      telefono:
+        type: "string"
+        example: "String"
+        description: "Número de teléfono"
+      tipoTelefono:
+        type: "string"
+        example: "String"
+        description: "Indica el tipo de este teléfono (casa, oficina, fax, móvil,\
+          \ etc.)."
+      cvePais:
+        type: "integer"
+        example: "integer"
+        description: "Clave Pais"
+      codArea:
+        type: "integer"
+        example: "integer"
+        description: "Codigo Area"
+    description: "Solo se tomara el primer numero telefonico"
+  BEOconsultaDatosBasicos_ticket:
+    required:
+    - "id_creds"
+    - "id_user"
+    properties:
+      id_user:
+        type: "string"
+        example: "abc"
+      id_creds:
+        type: "string"
+        example: "1233"
+
+  inline_response_200_listaDirecciones:
+    properties:
+      direccion:
+        type: "string"
+        example: "String"
+        description: "Dirección del cliente, agrega calle y número"
+      poblacion:
+        type: "string"
+        example: "String"
+        description: "Delegación o municipio."
+      ciudad:
+        type: "string"
+        example: "String"
+        description: "Ciudad."
+      estado:
+        type: "string"
+        example: "String"
+        description: "Estado"
+      cp:
+        type: "string"
+        example: "String"
+        description: "Código postal."
+      tipoDireccion:
+        type: "string"
+        example: "String"
+        description: "Indica el tipo de dirección (fiscal, jurídica, de mensajes,\
+          \ etc.)."
+  inline_response_200_listaTelefonos:
+    properties:
+      telefono:
+        type: "string"
+        example: "String"
+        description: "Número de teléfono"
+      tipoTelefono:
+        type: "string"
+        example: "String"
+        description: "Indica el tipo de este teléfono (casa, oficina, fax, móvil,\
+          \ etc.)."
+      cvePais:
+        type: "integer"
+        example: "integer"
+        description: "Clave Pais"
+      codArea:
+        type: "integer"
+        example: "integer"
+        description: "Codigo Area"
+    description: "Solo se tomara el primer numero telefonico"
+  inline_response_200_listaEmails:
+    properties:
+      mail:
+        type: "string"
+        example: "String"
+        description: "Correo electrónico."
+      activo:
+        type: "boolean"
+        example: false
+        description: "Bandera que indica si el correo en cuestión está activo o no."
+      tipoEmail:
+        type: "string"
+        example: "String"
+        description: "Indica el uso que se le da al correo del cliente."
+    description: "Solo se tomara el primer numero telefonico"
+  inline_response_200:
+    required:
+    - "nombre"
+    - "numCliente"
+    properties:
+      numCliente:
+        type: "integer"
+        format: "int64"
+        example: "Long"
+        description: "Número de cliente de T24"
+      nombre:
+        type: "string"
+        example: "String"
+        description: "Nombre del cliente (agrega apellidos)"
+      listaDirecciones:
+        type: "array"
+        items:
+          $ref: "#/definitions/inline_response_200_listaDirecciones"
+      rfc:
+        type: "string"
+        example: "String"
+        description: "RFC del cliente"
+      listaTelefonos:
+        type: "array"
+        items:
+          $ref: "#/definitions/inline_response_200_listaTelefonos"
+      listaEmails:
+        type: "array"
+        items:
+          $ref: "#/definitions/inline_response_200_listaEmails"
+      tipoPersona:
+        type: "string"
+        example: "String"
+        description: "Régimen fiscal de la persona, PM, PF o PFAE."
+      estatus:
+        type: "string"
+        example: "String"
+        description: "Estatus del cliente."
+      sucursal:
+        type: "string"
+        example: "String"
+        description: "Identificador de la sucursal asociada con el cliente."
+      vip:
+        type: "string"
+        example: "String"
+        description: "Indica si el cliente es VIP"
+      responseStatus:
+        type: "integer"
+        format: "int64"
+        example: "long"
+        description: "Código de respuesta del servicio. 200 denotará una respuesta\
+          \ exitosa."
+      responseError:
+        type: "string"
+        example: "String"
+        description: "Mensaje descriptivo del error, si el código de respuesta es\
+          \ diferente de 200."
+  consultaServiciosContratados_1:
+    required:
+    - "canal"
+    - "idPersona"
+    properties:
+      idPersona:
+        type: "number"
+        example: 1025478963
+      ticket:
+        $ref: "#/definitions/BEOconsultaDatosBasicos_ticket"
+      canal:
+        type: "string"
+        example: "CUBA1234575SDF"
+        minLength: 1
+        maxLength: 5
+  inline_response_200_1_listaServicios:
+    properties:
+      nombre:
+        type: "string"
+        example: "String"
+        description: "Nombre del servicio"
+      contratado:
+        type: "boolean"
+        example: false
+        description: "Bandera que indica si el servicio ha sido contratado por la\
+          \ persona."
+  inline_response_200_1:
+    properties:
+      listaServicios:
+        type: "array"
+        items:
+          $ref: "#/definitions/inline_response_200_1_listaServicios"
